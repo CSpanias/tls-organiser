@@ -1,0 +1,8 @@
+# Test files
+*.ntds
+*.md
+*.nessus
+*.xlsx
+
+# Keep documentation
+!README.md

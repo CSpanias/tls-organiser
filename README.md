@@ -1,2 +1,102 @@
 # tls-organiser
-WIP
+
+A Python-based tool designed to make SSL/TLS vulnerability reporting more efficient.
+
+Developed as a Proof of Concept to automate the consolidation of TLS-related Nessus findings into reporting-friendly root causes and generate reusable technical commentary, remediation guidance, and reference material.
+
+The tool consumes platform vulnerability exports and transforms hundreds or thousands of SSL/TLS findings into a concise set of report-ready observations.
+
+## Installation
+
+### UV (Recommended):
+
+```bash
+# Install UV
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Install tls-organiser via UV
+uv tool install git+https://github.com/CSpanias/tls-organiser
+
+# Verify installation
+tls-organiser -h
+
+# Update
+uv tool upgrade tls-organiser
+```
+
+### Clone Locally
+
+> **Note:** Python 3 must be installed and available in your PATH.
+
+```bash
+# Clone the repository
+git clone https://github.com/CSpanias/tls-organiser /opt/tls-organiser
+
+# Make the script executable
+chmod +x /opt/tls-organiser/tls_organiser.py
+
+# Create a symbolic link
+sudo ln -s /opt/tls-organiser/tls_organiser.py /usr/local/bin/tls-organiser
+
+# Verify installation
+tls-organiser -h
+```
+
+## Features
+
+The tool follows the same workflow typically used during SSL/TLS reviews and infrastructure vulnerability assessments.
+
+### Vulnerability Consolidation
+* Parse Platform XLS exports
+* Identify SSL/TLS-related findings automatically
+* Group individual plugins into reporting-friendly root causes
+* Remove duplicate observations
+* Count affected hosts, services, and vulnerability instances
+
+### Report Generation
+* Generate Markdown output
+* Produce executive-friendly finding summaries
+* Produce reusable technical commentary
+* Produce remediation guidance
+* Deduplicate references automatically
+* Generate report-ready content suitable for direct inclusion in infrastructure assessment reports
+
+## Usage
+
+```bash
+# Analyse an export
+tls-organiser findings.xlsx
+```
+
+## Example Output
+
+```bash
+$ tls-organiser tls-data.xlsx
+
+[*] TLS Organiser v1.0
+
+[+] Finding* Processed : 2962
+[+] Root Causes *      : 6
+
+[+] Output File        * tls-review.md
+```
+
+## Supported Nessus Findings
+
+| Root Cause                            | Plugin IDs                               |
+| ------------------------------------- | ---------------------------------------- |
+| Deprecated SSL Support                | 20007, 78447, 78479, 89058               |
+| Deprecated TLS Support                | 104743, 157288                           |
+| Weak Cipher Suites                    | 26928, 65821, 42873, 81606               |
+| Invalid TLS Certificate Configuration | 51192, 57582, 45410, 45411, 15901, 56284 |
+| Weak Certificate Cryptography         | 35291, 69551, 60108, 86067               |
+| Weak DH Parameters (Logjam)           | 83875                                    |
+| Anonymous Cipher Suites Supported     | 31705                                    |
+
+## Requirements
+
+* Python 3
+* openpyxl
+
+Roadmap
+* ???

@@ -1,0 +1,9 @@
+[project]
+name = "tls-organiser"
+version = "0.1.0"
+description = "Organise TLS/SSL Nessus vulnerabilities"
+readme = "README.md"
+requires-python = ">=3.10"
+
+[project.scripts]
+ntds-organiser = "tls_organiser:main"
