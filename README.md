@@ -54,12 +54,8 @@ The tool follows the same workflow typically used during SSL/TLS reviews and inf
 * Count affected hosts, services, and vulnerability instances
 
 ### Report Generation
-* Generate Markdown output
-* Produce executive-friendly finding summaries
-* Produce reusable technical commentary
-* Produce remediation guidance
+* Generate executive summary, technical commentary, and remediation guidance in Markdown format
 * Deduplicate references automatically
-* Generate report-ready content suitable for direct inclusion in infrastructure assessment reports
 
 ## Usage
 
