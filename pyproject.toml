@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "Organise TLS/SSL Nessus vulnerabilities"
 readme = "README.md"
 requires-python = ">=3.10"
+dependencies = ["openpyxl>=3.1.0"]
 
 [project.scripts]
 tls-organiser = "tls_organiser:main"
