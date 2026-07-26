@@ -87,9 +87,9 @@ $ tls-organiser tls-data.xlsx
 | ------------------------------------- | ---------------------------------------- |
 | Deprecated SSL Support                | 20007, 78447, 78479, 89058               |
 | Deprecated TLS Support                | 104743, 157288                           |
-| Weak Cipher Suites                    | 26928, 65821, 42873, 81606               |
-| Invalid TLS Certificate Configuration | 51192, 57582, 45410, 45411, 15901, 56284 |
-| Weak Certificate Cryptography         | 35291, 69551, 60108, 86067               |
+| Weak Cipher Suites                    | 26928, 42873, 65821, 81606               |
+| Invalid TLS Certificate Configuration | 15901, 45410, 45411, 51192, 57582, 56284 |
+| Weak Certificate Cryptography         | 35291, 60108, 69551, 86067               |
 | Weak DH Parameters (Logjam)           | 83875                                    |
 | Anonymous Cipher Suites Supported     | 31705                                    |
 
