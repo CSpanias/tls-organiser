@@ -67,14 +67,20 @@ tls-organiser findings.xlsx
 ## Example Output
 
 ```bash
-$ tls-organiser tls-data.xlsx
+$ tls-organiser tls-vulns-merged.xlsx
 
 [*] TLS Organiser v1.0
 
-[+] Finding* Processed : 2962
-[+] Root Causes *      : 6
+[+] Deprecated SSL Support                   Hosts: 29    Services: 44
+[+] Deprecated TLS Support                   Hosts: 346   Services: 492
+[+] Invalid TLS Certificate Configuration    Hosts: 440   Services: 736
+[+] Weak Certificate Cryptography            Hosts: 78    Services: 86
+[+] Weak Cipher Suites                       Hosts: 152   Services: 245
+[+] Weak DH Parameters (Logjam)              Hosts: 24    Services: 35
 
-[+] Output File        * tls-review.md
+[+] Findings Processed : 2968
+[+] Root Causes        : 6
+[+] Output File        : tls-review.md
 ```
 
 ## Supported Nessus Findings
