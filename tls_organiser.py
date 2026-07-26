@@ -572,8 +572,6 @@ def generate_markdown(grouped):
     with open(report_path, "w", encoding="utf-8") as fp:
         fp.write("\n".join(output) + "\n")
 
-    print(f"[+] Markdown report generated: {report_path}")
-
     return report_path
 
 
@@ -591,7 +589,27 @@ def main():
     findings = load_findings(args.xlsx)
     grouped = group_findings(findings)
 
-    generate_markdown(grouped)
+    report = generate_markdown(grouped)
+
+    print()
+    print("[*] TLS Organiser v1.0")
+    print()
+
+    for category in sorted(grouped.keys()):
+
+        stats = summarise_category(grouped[category])
+
+        print(
+            f"[+] {category:<40} "
+            f"Hosts: {stats['hosts']:<5} "
+            f"Services: {stats['services']:<5}"
+        )
+
+    print()
+    print(f"[+] Findings Processed : {len(findings)}")
+    print(f"[+] Root Causes        : {len(grouped)}")
+    print(f"[+] Output File        : {report}")
+    print()
 
 
 if __name__ == "__main__":
