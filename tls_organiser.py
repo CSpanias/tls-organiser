@@ -572,6 +572,8 @@ def generate_markdown(grouped):
     with open(report_path, "w", encoding="utf-8") as fp:
         fp.write("\n".join(output) + "\n")
 
+    print(f"[+] Markdown report generated: {report_path}")
+
     return report_path
 
 
