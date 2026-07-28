@@ -34,6 +34,7 @@ TLS_FINDINGS = {
 FINDING_EVIDENCE = {
 
     # SSL
+     #"20007": "SSL 2.0 and/or SSL 3.0 support was identified.",
     "78447": "SSL 3.0 support",      # Microsoft-focused POODLE
     "78479": "SSL 3.0 support",      # Generic POODLE
     "89058": "SSL 2.0 support",      # DROWN
@@ -43,6 +44,7 @@ FINDING_EVIDENCE = {
     "157288": "TLS 1.1 support",
 
     # Cipher Suites
+    #"26928": "Weak cipher suites were identified.",
     "65821": "RC4-based cipher suites",           # Bar Mitzvah
     "42873": "3DES-based cipher suites",          # SWEET32
     "81606": "Export-grade RSA cipher suites",    # FREAK
