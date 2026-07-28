@@ -8,7 +8,7 @@ The tool consumes platform vulnerability exports and transforms hundreds or thou
 
 ## Installation
 
-### UV (Recommended):
+### UV (Method 1 - Recommended):
 
 ```bash
 # Install UV
@@ -24,7 +24,7 @@ tls-organiser -h
 uv tool upgrade tls-organiser
 ```
 
-### Clone Locally
+### Clone Locally (Method 2)
 
 > **Note:** Python 3 must be installed and available in your PATH.
 

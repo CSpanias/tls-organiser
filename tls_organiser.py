@@ -20,14 +20,39 @@ warnings.filterwarnings("ignore", category=UserWarning, module="openpyxl")
 #---------------------------------------
 
 TLS_FINDINGS = {
+
     "Deprecated SSL Support": {"ids": {"20007","78447","78479","89058"}},
-    "Deprecated TLS Support": {"ids": {"104743","157288"}},
-    "Weak Cipher Suites": {"ids": {"26928","65821","42873","81606"}},
+    "Deprecated TLS Support": {"ids": {"104743", "157288"}},
+    "Weak Cipher Suites": {"ids": {"26928","65821","42873","81606", "SC-3538"}},
     "Invalid TLS Certificate Configuration": {"ids": {"51192","57582","45410","45411","15901","56284"}},
     "Weak Certificate Cryptography": {"ids": {"35291","69551","60108","86067"}},
     "Weak DH Parameters (Logjam)": {"ids": {"83875"}},
     "Anonymous Cipher Suites Supported": {"ids": {"31705"}}
     }
+
+
+FINDING_EVIDENCE = {
+
+    # SSL
+    "78447": "SSL 3.0 support",      # Microsoft-focused POODLE
+    "78479": "SSL 3.0 support",      # Generic POODLE
+    "89058": "SSL 2.0 support",      # DROWN
+
+    # TLS
+    "104743": "TLS 1.0 support",
+    "157288": "TLS 1.1 support",
+
+    # Cipher Suites
+    "65821": "RC4-based cipher suites",           # Bar Mitzvah
+    "42873": "3DES-based cipher suites",          # SWEET32
+    "81606": "Export-grade RSA cipher suites",    # FREAK
+
+    # DH
+    "83875": "Weak Diffie-Hellman parameters (≤1024-bit)", # Logjam
+
+    # Anonymous
+    "31705": "Anonymous cipher suites"
+}
 
 
 CERT_ISSUES = {
@@ -105,47 +130,20 @@ CERT_ISSUES = {
 
 REFERENCES = {
 
-    "tls_best_practices":
-        "https://github.com/ssllabs/research/wiki/ssl-and-tls-deployment-best-practices",
-
-    "microsoft_tls":
-        "https://learn.microsoft.com/en-us/dotnet/core/extensions/sslstream-best-practices",
-
-    "ncsc_tls":
-        "https://www.gov.uk/government/publications/email-security-standards/transport-layer-security-tls",
-
-    "cipher_hardening":
-        "https://oneuptime.com/blog/post/2026-03-20-disable-weak-tls-cipher-suites/view#step-4-ciphers-to-explicitly-disable",
-
-    "nginx_ssl":
-        "https://nginx.org/en/docs/http/ngx_http_ssl_module.html",
-
-    "apache_ssl":
-        "https://httpd.apache.org/docs/2.4/mod/mod_ssl.html",
-
-    "iis_ssl":
-        "https://techcommunity.microsoft.com/blog/iis-support-blog/how-to-disable-ssl-2-0-or-ssl-3-0-from-iis-server/287812",
-
-    "iis_crypto":
-        "https://www.nartac.com/Products/IISCrypto",
-
-    "rc4":
-        "https://support.microsoft.com/en-gb/topic/microsoft-security-advisory-update-for-disabling-rc4-479fd6f0-c7b5-0671-975b-c45c3f2c0540#ID0EFR",
-
-    "cbc":
-        "https://learn.microsoft.com/en-us/dotnet/standard/security/vulnerabilities-cbc-mode",
-
-    "cipher_suite_info":
-        "https://ciphersuite.info/search/?q=CBC",
-
-    "freak":
-        "https://freakattack.com/",
-
-    "logjam_ms":
-        "https://docs.microsoft.com/en-us/security-updates/securitybulletins/2015/ms15-055",
-
-    "logjam":
-        "https://weakdh.org/sysadmin.html"
+    "microsoft_tls": "https://learn.microsoft.com/en-us/dotnet/core/extensions/sslstream-best-practices",
+    "ncsc_tls": "https://www.gov.uk/government/publications/email-security-standards/transport-layer-security-tls",
+    "cipher_hardening": "https://oneuptime.com/blog/post/2026-03-20-disable-weak-tls-cipher-suites/view#step-4-ciphers-to-explicitly-disable",
+    "nginx_ssl": "https://nginx.org/en/docs/http/ngx_http_ssl_module.html",
+    "apache_ssl": "https://httpd.apache.org/docs/2.4/mod/mod_ssl.html",
+    "iis_ssl": "https://techcommunity.microsoft.com/blog/iis-support-blog/how-to-disable-ssl-2-0-or-ssl-3-0-from-iis-server/287812",
+    "iis_crypto": "https://www.nartac.com/Products/IISCrypto",
+    "rc4": "https://support.microsoft.com/en-gb/topic/microsoft-security-advisory-update-for-disabling-rc4-479fd6f0-c7b5-0671-975b-c45c3f2c0540#ID0EFR",
+    "freak": "https://freakattack.com/",
+    "logjam_ms": "https://docs.microsoft.com/en-us/security-updates/securitybulletins/2015/ms15-055",
+    "logjam": "https://weakdh.org/sysadmin.html",
+    "cert_best_practices": "https://www.zenarmor.com/docs/network-security-tutorials/best-practices-for-ssl-tls-implementation#discovering-phase-for-ssltls-certificate",
+    "weak_cipher_suites": "https://owasp.org/www-project-web-security-testing-guide/v41/4-Web_Application_Security_Testing/09-Testing_for_Weak_Cryptography/01-Testing_for_Weak_SSL_TLS_Ciphers_Insufficient_Transport_Layer_Protection#:~:text=Testing%20for%20Weak%20SSL/TLS",
+    "anon_cipher_suites": "https://wiki.openssl.org/index.php/SSL_and_TLS_Protocols#:~:text=aNULL"
 }
 
 
@@ -185,7 +183,6 @@ TLS_LIBRARY = {
         ,
 
         "references": [
-            "tls_best_practices",
             "microsoft_tls",
             "ncsc_tls",
             "cipher_hardening",
@@ -218,7 +215,6 @@ TLS_LIBRARY = {
         ,
         
         "references": [
-            "tls_best_practices",
             "microsoft_tls",
             "ncsc_tls",
             "cipher_hardening",
@@ -238,7 +234,7 @@ TLS_LIBRARY = {
             "cipher suites rely on outdated algorithms or cryptographic constructions that provide reduced protection compared to "
             "contemporary alternatives, weakening the overall confidentiality and integrity of encrypted communications.\n\n"
 
-            "The identified cipher suites included legacy algorithms such as RC4, 3DES, and export-grade cryptographic suites designed "
+            "The identified cipher suites included legacy algorithms such as RC4, 3DES, CBC-mode and export-grade cryptographic suites designed "
             "around intentionally weakened cryptography. RC4-based cipher suites are affected by well-documented cryptographic weaknesses "
             "that may allow portions of encrypted communications to be recovered under specific conditions. Similarly, 3DES-based cipher "
             "suites are vulnerable to attacks such as SWEET32, which exploit the limited block size used by the cipher and may permit "
@@ -263,8 +259,6 @@ TLS_LIBRARY = {
 
         "references": [
             "rc4",
-            "cbc",
-            "cipher_suite_info",
             "cipher_hardening",
             "nginx_ssl",
             "apache_ssl",
@@ -343,7 +337,8 @@ TLS_LIBRARY = {
                 ,
 
                 "references": [
-
+                    "cert_best_practices",
+                    "weak_cipher_suites"
                 ]
         },
 
@@ -374,7 +369,8 @@ TLS_LIBRARY = {
             ,
 
             "references": [
-
+                "cert_best_practices",
+                "anon_cipher_suites"
             ]
         },
 
@@ -395,10 +391,28 @@ TLS_LIBRARY = {
                 "to ensure certificates are regularly reviewed, monitored, and renewed before expiry.",
 
             "references": [
-
+                "cert_best_practices",
+                "weak_cipher_suites"
             ]
         }
 }
+
+
+#---------------------------------------
+# Helpers
+#---------------------------------------
+def build_evidence(findings):
+
+    evidence = set()
+
+    for finding in findings:
+
+        plugin_id = finding["plugin_id"]
+
+        if plugin_id in FINDING_EVIDENCE:
+            evidence.add(FINDING_EVIDENCE[plugin_id])
+
+    return sorted(evidence)
 
 
 #---------------------------------------
@@ -532,6 +546,15 @@ def generate_markdown(grouped):
         stats = summarise_category(findings)
 
         output.append(f"### {TLS_LIBRARY[category]['title']}\n")
+        evidence = build_evidence(findings)
+
+        if evidence:
+            output.append("Testing identified the following:\n")
+
+            for item in evidence:
+                output.append(f"- {item}")
+
+            output.append("")
 
         if category == "Invalid TLS Certificate Configuration":
             output.append(build_certificate_commentary(findings))
