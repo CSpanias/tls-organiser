@@ -22,11 +22,11 @@ warnings.filterwarnings("ignore", category=UserWarning, module="openpyxl")
 TLS_FINDINGS = {
 
     "Deprecated SSL Support": {"ids": {"20007","78447","78479","89058"}},
-    "Deprecated TLS Support": {"ids": {"104743", "157288"}},
+    "Deprecated TLS Support": {"ids": {"104743", "157288","42880"}},
     "Weak Cipher Suites": {"ids": {"26928","65821","42873","81606", "SC-3538"}},
     "Invalid TLS Certificate Configuration": {"ids": {"51192","57582","45410","45411","15901","56284"}},
     "Weak Certificate Cryptography": {"ids": {"35291","69551","60108","86067"}},
-    "Weak DH Parameters (Logjam)": {"ids": {"83875"}},
+    "Weak DH Parameters (Logjam)": {"ids": {"83875","53360"}},
     "Anonymous Cipher Suites Supported": {"ids": {"31705"}}
     }
 
@@ -42,6 +42,7 @@ FINDING_EVIDENCE = {
     # TLS
     "104743": "TLS 1.0 support",
     "157288": "TLS 1.1 support",
+    "42880": "TLS 1.0 insecure renegotiation support",
 
     # Cipher Suites
     #"26928": "Weak cipher suites were identified.",
@@ -51,6 +52,7 @@ FINDING_EVIDENCE = {
 
     # DH
     "83875": "Weak Diffie-Hellman parameters (≤1024-bit)", # Logjam
+    "53360": "Weak Diffie-Hellman key exchange implementation", # Weak public key value
 
     # Anonymous
     "31705": "Anonymous cipher suites"
@@ -145,7 +147,8 @@ REFERENCES = {
     "logjam": "https://weakdh.org/sysadmin.html",
     "cert_best_practices": "https://www.zenarmor.com/docs/network-security-tutorials/best-practices-for-ssl-tls-implementation#discovering-phase-for-ssltls-certificate",
     "weak_cipher_suites": "https://owasp.org/www-project-web-security-testing-guide/v41/4-Web_Application_Security_Testing/09-Testing_for_Weak_Cryptography/01-Testing_for_Weak_SSL_TLS_Ciphers_Insufficient_Transport_Layer_Protection#:~:text=Testing%20for%20Weak%20SSL/TLS",
-    "anon_cipher_suites": "https://wiki.openssl.org/index.php/SSL_and_TLS_Protocols#:~:text=aNULL"
+    "anon_cipher_suites": "https://wiki.openssl.org/index.php/SSL_and_TLS_Protocols#:~:text=aNULL",
+    "CVE-2009-3555" : "https://nvd.nist.gov/vuln/detail/CVE-2009-3555"
 }
 
 
@@ -213,7 +216,8 @@ TLS_LIBRARY = {
                 
         "solution":
             "Remove support for TLS 1.0 and TLS 1.1 and restrict communication to modern TLS versions, preferably TLS 1.2 or higher with "
-            "secure cipher suites."
+            "secure cipher suites. Where supported, ensure insecure TLS renegotiation is disabled and that affected services are "
+            "updated to versions implementing secure renegotiation mechanisms."
         ,
         
         "references": [
@@ -403,6 +407,12 @@ TLS_LIBRARY = {
 #---------------------------------------
 # Helpers
 #---------------------------------------
+
+def has_plugin(findings, plugin_id):
+
+    return any(finding["plugin_id"] == plugin_id for finding in findings)
+
+
 def build_evidence(findings):
 
     evidence = set()
@@ -415,6 +425,19 @@ def build_evidence(findings):
             evidence.add(FINDING_EVIDENCE[plugin_id])
 
     return sorted(evidence)
+
+
+def tls_commentary(findings):
+
+    commentary = TLS_LIBRARY["Deprecated TLS Support"]["commentary"]
+
+    if has_plugin(findings, "42880"):
+
+        commentary += ("\n\nTesting also identified instances where legacy TLS implementations supported insecure renegotiation behaviour "
+            "associated with CVE-2009-3555. Whilst successful exploitation generally requires an Adversary-in-the-Middle (AitM) position, "
+            "insecure renegotiation can weaken the security guarantees provided by TLS and represents an outdated protocol implementation.")
+
+    return commentary
 
 
 #---------------------------------------
@@ -561,6 +584,9 @@ def generate_markdown(grouped):
         if category == "Invalid TLS Certificate Configuration":
             output.append(build_certificate_commentary(findings))
 
+        elif category == "Deprecated TLS Support":
+            output.append(tls_commentary(findings))
+
         else:
             output.append(TLS_LIBRARY[category]["commentary"])
 
@@ -587,6 +613,9 @@ def generate_markdown(grouped):
 
         for ref in TLS_LIBRARY[category]["references"]:
             all_refs.add(ref)
+
+        if (category == "Deprecated TLS Support" and has_plugin(grouped[category], "42880")):
+            all_refs.add("CVE-2009-3555")
 
     for ref in sorted(all_refs):
         url = REFERENCES[ref]
