@@ -146,7 +146,7 @@ REFERENCES = {
     "logjam_ms": "https://docs.microsoft.com/en-us/security-updates/securitybulletins/2015/ms15-055",
     "logjam": "https://weakdh.org/sysadmin.html",
     "cert_best_practices": "https://www.zenarmor.com/docs/network-security-tutorials/best-practices-for-ssl-tls-implementation#discovering-phase-for-ssltls-certificate",
-    "weak_cipher_suites": "https://owasp.org/www-project-web-security-testing-guide/v41/4-Web_Application_Security_Testing/09-Testing_for_Weak_Cryptography/01-Testing_for_Weak_SSL_TLS_Ciphers_Insufficient_Transport_Layer_Protection#:~:text=Testing%20for%20Weak%20SSL/TLS",
+    "weak_cipher_suites": "https://wstg.owasp.org/v4.1/4-Web_Application_Security_Testing/09-Testing_for_Weak_Cryptography/01-Testing_for_Weak_SSL_TLS_Ciphers_Insufficient_Transport_Layer_Protection/",
     "anon_cipher_suites": "https://wiki.openssl.org/index.php/SSL_and_TLS_Protocols#:~:text=aNULL",
     "CVE-2009-3555" : "https://nvd.nist.gov/vuln/detail/CVE-2009-3555"
 }
